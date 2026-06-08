@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver
     private CombatContext _ctx;
 
     private Animator _animator;
+    private Camera _cam;
 
     private int _currentFrame;
     private int _hitstopFrames;
@@ -50,7 +51,8 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver
 
         _resolver = new ActionResolver(_inputBuffer, _runner, _ctx, _neutralDef);
 
-        _locomotion = new Locomotion(_inputReader, _motor, _ctx);
+        _cam = Camera.main;
+        _locomotion = new Locomotion(_inputReader, _inputBuffer, _motor, _ctx, _cam);
 
         _animator = GetComponent<Animator>();
         _driver = new AnimationDriver(_animator, _runner);
@@ -60,6 +62,7 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver
         _hitResolution = new HitResolution(_hitEvents, this);
 
         GetComponent<HitboxGizmo>().Runner = _runner;
+
     }
 
     private void Update()
@@ -103,6 +106,10 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver
         {
             _inputBuffer.Push(InputId.Attack, _currentFrame);
         }
+        if (_inputReader.ConsumeJumpEdge())
+        {
+            _inputBuffer.Push(InputId.Jump, _currentFrame);
+        }
 
         // 2) Runner.Advance : currentFrame++ & CancelFlags state update
         _runner.Advance();
@@ -114,7 +121,7 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver
         _runner.Apply();
 
         // 5) Locomotion.Tick : ActionState Gate
-        _locomotion.Tick();
+        _locomotion.Tick(_currentFrame);
 
         // 6) CharacterMotor.Tick : Move Once
         _motor.Tick(Time.fixedDeltaTime);

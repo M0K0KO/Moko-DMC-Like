@@ -16,7 +16,7 @@ MonoBehaviour:
   AllowGrounded: 1
   AllowAir: 0
   Clip: {fileID: 7400000, guid: da224721b92152e4693d9e48d21b0609, type: 2}
-  TotalFrames: 48
+  TotalFrames: 72
   NextOnAttack: {fileID: 11400000, guid: a4f9142b6b1625745bd03bc274828cff, type: 2}
   HitWindows:
   - StartFrame: 8
@@ -24,7 +24,7 @@ MonoBehaviour:
     BoxOffset: {x: 0, y: 1, z: 1}
     BoxSize: {x: 1.2, y: 1.5, z: 1.5}
     Damage: 10
-    HitstopFrames: 4
+    HitstopFrames: 8
     Launch: {x: 0, y: 0, z: 0}
   CancelWindows:
   - StartFrame: 12
@@ -103,8 +103,8 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.31789878
-        value: 4.0737414
+        time: 0.33160958
+        value: 1.5684547
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -112,8 +112,8 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.61884665
-        value: 4.0737414
+        time: 0.63255745
+        value: 1.5684547
         inSlope: 0
         outSlope: 0
         tangentMode: 0

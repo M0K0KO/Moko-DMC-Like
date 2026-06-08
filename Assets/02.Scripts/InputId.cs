@@ -1,4 +1,4 @@
 public enum InputId
 {
-    None, Attack
+    None, Attack, Jump
 }

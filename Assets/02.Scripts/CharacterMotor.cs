@@ -7,6 +7,8 @@ public class CharacterMotor : MonoBehaviour
 
     private const float Skin = 0.05f;
     private const float Gravity = -25f;
+    private const float _maxFallSpeed = -40f;
+
     private const float GroundProbe = 0.1f;
     private const int MaxBounces = 3;
     private const int MaxDepenetrationIters = 4;
@@ -14,8 +16,19 @@ public class CharacterMotor : MonoBehaviour
     private readonly Collider[] _overlaps = new Collider[32];
 
     private Vector3 _velocity;
+
+    private bool _verticalSetThisFrame;
+
     public bool IsGrounded { get; private set; }
+
+    public float VerticalVelocity => _velocity.y;
     public Vector3 Velocity => _velocity;
+
+    public void SetVerticalVelocity(float vy)
+    {
+        _velocity.y = vy;
+        _verticalSetThisFrame = true;
+    }
 
     public void SetHorizontalVelocity(Vector2 h) 
     {
@@ -36,7 +49,11 @@ public class CharacterMotor : MonoBehaviour
         pos = CollideAndSlide(pos, horizontal);
 
         // 2) Vertical Pass, Gravity, Ground Snap
-        _velocity.y += Gravity * dt;
+        if (_verticalSetThisFrame)
+            _verticalSetThisFrame = false;
+        else
+            _velocity.y += Gravity * dt;
+        _velocity.y = Mathf.Max(_velocity.y, _maxFallSpeed);
         pos = MoveVertical(pos, dt);
 
         transform.position = pos;

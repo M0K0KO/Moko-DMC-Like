@@ -69,12 +69,10 @@ public class ActionTimelineRunner
                 m.VX?.Evaluate(t) ?? 0f,
                 m.VY?.Evaluate(t) ?? 0f,
                 m.VZ?.Evaluate(t) ?? 0f);
-
-            Vector3 world = _motor.transform.rotation * desiredLocal;
-            _motor.SetHorizontalVelocity(new Vector2(world.x, world.z));
         }
 
-        // hit window activation
+        Vector3 world = _motor.transform.rotation * desiredLocal;
+        _motor.SetHorizontalVelocity(new Vector2(world.x, world.z));
 
         if (_currentFrame >= _def.TotalFrames)
         {
