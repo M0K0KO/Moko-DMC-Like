@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5ccb625bb06a94c4e827c48951813c59
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/meshes/zyn_msh_basicplane.prefab
+  uploadId: 906802

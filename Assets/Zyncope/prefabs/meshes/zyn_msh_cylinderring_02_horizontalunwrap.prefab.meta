@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e59b23a59d3fd4c44bf4cda3fa8790b9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/meshes/zyn_msh_cylinderring_02_horizontalunwrap.prefab
+  uploadId: 906802

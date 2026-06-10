@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0c00f32ca1305094aa3366cbc8ffc707
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/attacks/zyn_pfab_pierce_03_purple_ground.prefab
+  uploadId: 906802

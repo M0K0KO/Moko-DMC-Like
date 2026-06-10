@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c6c46997763c7734c87d2e820019249c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/materials/zyn_mat_splash_01_ab.mat
+  uploadId: 906802

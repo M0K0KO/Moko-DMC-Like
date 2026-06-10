@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9ddad75243291aa4e8e74fb9c013db5d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/attacks/zyn_pfab_bluntmultihit_01_purple_ground.prefab
+  uploadId: 906802

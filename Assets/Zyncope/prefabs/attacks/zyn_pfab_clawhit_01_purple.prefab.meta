@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d902edbc6177f4b49aa59556588ea9f3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/attacks/zyn_pfab_clawhit_01_purple.prefab
+  uploadId: 906802

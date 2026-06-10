@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 544847af3e1c3064d864cf36bc4eae37, type: 3}
+  m_Name: AirAttack01
+  m_EditorClassIdentifier: 
+  Type: 1
+  AllowGrounded: 1
+  AllowAir: 0
+  Clip: {fileID: 7400000, guid: a4ddf5095b2002040bb7aa0bc18cbeaa, type: 2}
+  TotalFrames: 51
+  NextOnAttack: {fileID: 11400000, guid: ea7083c305082174193b317714332e89, type: 2}
+  HitWindows:
+  - StartFrame: 12
+    EndFrame: 18
+    BoxOffset: {x: 0, y: 1, z: 1}
+    BoxSize: {x: 1.2, y: 1.5, z: 1.5}
+    Damage: 10
+    HitstopFrames: 5
+    Reaction: 1
+    Launch: {x: 0, y: 5, z: 0}
+  CancelWindows:
+  - StartFrame: 30
+    EndFrame: 40
+    AllowedInto: 1
+  MotionImpulses:
+  - DrivesVertical: 1
+    StartFrame: 1
+    EndFrame: 30
+    VX:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    VY:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 5
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -5
+        outSlope: -5
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    VZ:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4

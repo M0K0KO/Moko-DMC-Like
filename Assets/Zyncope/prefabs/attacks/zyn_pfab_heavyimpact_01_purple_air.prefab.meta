@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a46ed93c9cc899341b23eb906b9796b6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/attacks/zyn_pfab_heavyimpact_01_purple_air.prefab
+  uploadId: 906802

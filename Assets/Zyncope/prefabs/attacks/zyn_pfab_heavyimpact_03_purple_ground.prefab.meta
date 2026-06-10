@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f46c5079b966349408550fac885bd343
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/attacks/zyn_pfab_heavyimpact_03_purple_ground.prefab
+  uploadId: 906802

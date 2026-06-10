@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 780b7f112218bba4db55269335b9716c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/attacks/zyn_pfab_pierceimpact_01_purple.prefab
+  uploadId: 906802

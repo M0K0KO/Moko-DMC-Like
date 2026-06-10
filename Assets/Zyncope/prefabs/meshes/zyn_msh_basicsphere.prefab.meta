@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0a8b1b1ec7d391447a945b169525949d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/meshes/zyn_msh_basicsphere.prefab
+  uploadId: 906802

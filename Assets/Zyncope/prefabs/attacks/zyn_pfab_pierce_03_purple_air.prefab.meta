@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b951a75ec4a3dc746ac9a0ebcf0c4861
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/attacks/zyn_pfab_pierce_03_purple_air.prefab
+  uploadId: 906802

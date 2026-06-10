@@ -1,4 +1,10 @@
 public enum InputId
 {
-    None, Attack, Jump
+    None, 
+    Attack, 
+    Shoot,
+    Jump,
+    Launcher,
+    Dodge,
+    LockOn,
 }

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b6fac392bfe16e340850d9210c97dcd8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/meshes/zyn_msh_conecylinder_01_verticalunwrap.prefab
+  uploadId: 906802

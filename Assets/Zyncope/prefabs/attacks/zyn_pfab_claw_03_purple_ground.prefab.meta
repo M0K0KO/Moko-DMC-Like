@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 61f35f10b340e2f40b1a61e915f530a9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/attacks/zyn_pfab_claw_03_purple_ground.prefab
+  uploadId: 906802

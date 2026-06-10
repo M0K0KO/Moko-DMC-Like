@@ -2,12 +2,20 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    void TakeHit(in HitInfo info);
+    bool TakeHit(in HitInfo info);
+}
+
+public enum ReactionType
+{
+    Flinch,
+    Launched,
+    //Knockback
 }
 
 public struct HitInfo
 {
     public int Damage, HitstopFrames;
+    public ReactionType Reaction;
     public Vector3 Launch, HitPoint;
 }
 

@@ -6,7 +6,7 @@ public class CharacterMotor : MonoBehaviour
     [SerializeField] private LayerMask _collisionMask;
 
     private const float Skin = 0.05f;
-    private const float Gravity = -25f;
+    public const float Gravity = -25f;
     private const float _maxFallSpeed = -40f;
 
     private const float GroundProbe = 0.1f;
@@ -34,6 +34,12 @@ public class CharacterMotor : MonoBehaviour
     {
         _velocity.x = h.x;
         _velocity.z = h.y;
+    }
+
+    public void SetHorizontalVelocity(Vector3 h)
+    {
+        _velocity.x = h.x;
+        _velocity.z = h.z;
     }
 
     public void Tick(float dt)

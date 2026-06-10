@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 52342f34d86fd764aa306c872d4ba989
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/materials/zyn_mat_slash_02_purple_add.mat
+  uploadId: 906802

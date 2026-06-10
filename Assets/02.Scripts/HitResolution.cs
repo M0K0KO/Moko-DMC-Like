@@ -6,6 +6,8 @@ public class HitResolution
     private readonly List<HitEvent> _events;
     private readonly IHitstopReceiver _attacker;
 
+    public event System.Action<HitInfo> OnHit;
+
     public HitResolution(List<HitEvent> sink, IHitstopReceiver attacker)
     {
         _events = sink;
@@ -20,7 +22,11 @@ public class HitResolution
         int maxStop = 0;
         foreach(var e in _events)
         {
-            e.Target.TakeHit(e.Info);
+            if (!e.Target.TakeHit(e.Info)) 
+                continue;
+
+            OnHit?.Invoke(e.Info);
+
             if (e.Info.HitstopFrames > maxStop)
                 maxStop = e.Info.HitstopFrames;
         }

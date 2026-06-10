@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 28101e35af6f9244ebbed1d03df03e87
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/materials/zyn_mat_hitimpactflare_01_add.mat
+  uploadId: 906802

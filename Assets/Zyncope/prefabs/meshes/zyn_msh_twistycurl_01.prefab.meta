@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7b309ea8990d1ad438beb27f13ecc0d7
+labels:
+- AttackVFX
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: attackvfx
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/meshes/zyn_msh_twistycurl_01.prefab
+  uploadId: 906802

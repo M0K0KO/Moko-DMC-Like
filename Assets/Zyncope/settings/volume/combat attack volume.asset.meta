@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4c96d0efe180c8f49841b1e45984b08c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/settings/volume/combat attack volume.asset
+  uploadId: 906802

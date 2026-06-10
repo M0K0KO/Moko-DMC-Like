@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: fc19a64ce6dea534db915c2a1e38e4d4
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/meshes/zyn_msh_semicircle_01_horizontalunwrap.prefab
+  uploadId: 906802

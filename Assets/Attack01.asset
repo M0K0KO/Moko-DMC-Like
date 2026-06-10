@@ -20,18 +20,24 @@ MonoBehaviour:
   NextOnAttack: {fileID: 11400000, guid: 7e286b08cb6500a428243057cf648a97, type: 2}
   HitWindows:
   - StartFrame: 6
-    EndFrame: 10
-    BoxOffset: {x: 0, y: 1, z: 1}
-    BoxSize: {x: 1.2, y: 1.5, z: 1.5}
+    EndFrame: 16
+    BoxOffset: {x: 0, y: 1, z: 0.7}
+    BoxSize: {x: 1, y: 1, z: 1}
     Damage: 10
     HitstopFrames: 8
+    Reaction: 0
     Launch: {x: 0, y: 0, z: 0}
   CancelWindows:
-  - StartFrame: 10
+  - StartFrame: 15
     EndFrame: 26
     AllowedInto: 1
+  - StartFrame: 15
+    EndFrame: 51
+    AllowedInto: 2
+  InvulnWindows: []
   MotionImpulses:
-  - StartFrame: 4
+  - DrivesVertical: 0
+    StartFrame: 4
     EndFrame: 12
     VX:
       serializedVersion: 2
@@ -103,8 +109,8 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.3218794
-        value: 1.9940655
+        time: 0.33840004
+        value: 13.888422
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -112,8 +118,8 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.6228273
-        value: 1.9940655
+        time: 0.63934803
+        value: 13.888422
         inSlope: 0
         outSlope: 0
         tangentMode: 0

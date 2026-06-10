@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 05074965a18661b4fa0a0303e78db1bc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/materials/zyn_mat_groundcrackinner_01_ab.mat
+  uploadId: 906802

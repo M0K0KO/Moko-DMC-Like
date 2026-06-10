@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 42bc158b46284ac4cb745d2df69decd0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/prefabs/attacks/zyn_pfab_lightslash_05_purple_ground.prefab
+  uploadId: 906802

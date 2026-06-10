@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: bdd4a740ba7ce7f4483af96b00c8d331
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 625f186215c104763be7675aa2d941aa, type: 3}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324491
+  packageName: Attack VFX
+  packageVersion: 1.0.2
+  assetPath: Assets/Zyncope/shaders/zyn_shd_multifeature_cd_v1.0.1.shadergraph
+  uploadId: 906802
