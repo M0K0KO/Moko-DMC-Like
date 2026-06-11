@@ -24,7 +24,7 @@ MonoBehaviour:
     BoxOffset: {x: 0, y: 1, z: 0.8}
     BoxSize: {x: 1, y: 1, z: 1}
     Damage: 10
-    HitstopFrames: 8
+    HitstopFrames: 3
     Reaction: 0
     Launch: {x: 0, y: 0, z: 0}
   - StartFrame: 12
@@ -32,7 +32,7 @@ MonoBehaviour:
     BoxOffset: {x: 0, y: 1, z: 0.8}
     BoxSize: {x: 1, y: 1, z: 1}
     Damage: 10
-    HitstopFrames: 8
+    HitstopFrames: 3
     Reaction: 0
     Launch: {x: 0, y: 0, z: 0}
   CancelWindows:
@@ -154,7 +154,7 @@ MonoBehaviour:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.65
-        value: 8
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.75
-        value: 8
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0

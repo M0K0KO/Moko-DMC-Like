@@ -1,16 +1,38 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using UnityEditor;
 
+/// <summary>
+/// Moko Action Editor - STEP 3: AnimationMode pose preview.
+///
+/// Builds on Step 1 (ruler + scrubber + sub-row packing) and Step 2 (bar editing).
+/// Step 3 samples the ActionDefinition.Clip onto a scene preview target so scrubbing
+/// shows the actual pose, with explicit handling of the common case where the clip's
+/// real frame count (length * frameRate) differs from ActionDefinition.TotalFrames:
+///
+///   - Normalized  : t = (frame / TotalFrames) * clip.length   (stretch clip to fit; default)
+///   - ClipFps     : t = frame / clip.frameRate (clamped)       (assumes logic fps == clip fps)
+///
+/// Pick the mode that matches how the runtime AnimationDriver maps logic frames to clip time.
+/// The clip's fps / frame count vs TotalFrames is always shown (highlighted on mismatch).
+///
+/// Sampling targets a scene GameObject (like Unity's Animation window). AnimationMode is
+/// stopped in OnDisable / when preview is turned off, restoring the object's original pose.
+///
+/// Place under an "Editor" folder. Open: menu "Moko/Action Editor" or double-click an asset.
+/// </summary>
 public class ActionEditorWindow : EditorWindow
 {
+    // ---- target ----
     [SerializeField] ActionDefinition _def;
     SerializedObject _so;
 
+    // ---- view state ----
     [SerializeField] int _currentFrame;
     [SerializeField] float _pixelsPerFrame = 16f;
     [SerializeField] float _scrollX;
 
+    // ---- preview ----
     [SerializeField] GameObject _previewTarget;
     [SerializeField] bool _previewOn;
     [SerializeField] bool _playing;
@@ -21,34 +43,21 @@ public class ActionEditorWindow : EditorWindow
     double _playAccum;
     int _lastSampledFrame = -1;
 
+    // ---- selection / drag ----
     int _selLane = -1, _selIndex = -1;
     enum DragMode { None, Scrub, LeftEdge, RightEdge, Body, Point }
     DragMode _drag = DragMode.None;
     int _grabOffset;
     int _timelineCtrl;
 
-    // layout constants
-    const float TimelineTopPad = 8f;
-    const float RulerH = 20f;
-    const float RowH = 18f;
-    const float RowGap = 2f;
-    const float LanePad = 3f;
-    const float LaneLabelW = 96f;
-    const float Handle = 10f;
-    const float MinPxF = 4f;
-    const float MaxPxF = 48f;
+    // ---- layout constants ----
+    const float RulerH = 20f, RowH = 18f, RowGap = 2f, LanePad = 3f, LaneLabelW = 96f;
+    const float Handle = 4f, MinPxF = 4f, MaxPxF = 48f;
     const int FrameStepBig = 5;
 
-    int _scrubControl;
-
+    // ---- lane table ----
     enum LaneKind { Range, Point }
-    struct Lane
-    {
-        public string Name;
-        public Color Color;
-        public LaneKind Kind;
-        public string Prop;
-    }
+    struct Lane { public string Name; public Color Color; public LaneKind Kind; public string Prop; }
 
     static readonly Lane[] Lanes =
     {
@@ -59,8 +68,8 @@ public class ActionEditorWindow : EditorWindow
         new Lane { Name = "Ranged", Color = new Color(0.95f, 0.80f, 0.25f), Kind = LaneKind.Point, Prop = "RangedFires" },
     };
 
-    struct Bar { public int Index, Start, End, Row; public string Label; }; 
-
+    // ---- packed layout (rebuilt every OnGUI) ----
+    struct Bar { public int Index, Start, End, Row; public string Label; }
     readonly List<Bar>[] _bars = new List<Bar>[Lanes.Length];
     readonly int[] _rows = new int[Lanes.Length];
     readonly float[] _laneY = new float[Lanes.Length];
@@ -96,14 +105,14 @@ public class ActionEditorWindow : EditorWindow
         if (_so == null || _so.targetObject != _def) _so = new SerializedObject(_def);
     }
 
-    private void OnGUI()
+    // ======================================================================= GUI
+    void OnGUI()
     {
-
         DrawToolbar();
 
         if (_def == null)
         {
-            EditorGUILayout.HelpBox("Select an ActionDefinition.\n (Double-Clike the asset, or assign it above.)", MessageType.Info);
+            EditorGUILayout.HelpBox("Select an ActionDefinition.\n(Double-click the asset, or assign it above.)", MessageType.Info);
             return;
         }
 
@@ -111,18 +120,72 @@ public class ActionEditorWindow : EditorWindow
         DrawPreviewBar();
         BuildLayout();
 
-        GUILayout.Space(TimelineTopPad);
-
         float timelineH = RulerH + _lanesTotalH + 8f;
         Rect area = GUILayoutUtility.GetRect(0, 100000, timelineH, timelineH);
 
         HandleKeyboard();
         DrawTimeline(area);
         DrawInspector();
+        DrawValidation();
 
-        SamplePoseIfNeeded();
+        SamplePoseIfNeeded();   // repaint-pass only; samples when the frame changed
     }
 
+    // --------------------------------------------------------------- validation
+    // Surface obviously-broken window data. Rules are derived from the schema:
+    // Start>End, out-of-range frames, a cancel window that allows nothing, no clip.
+    void DrawValidation()
+    {
+        var issues = CollectIssues();
+        EditorGUILayout.Space(2);
+        if (issues.Count == 0)
+        {
+            EditorGUILayout.LabelField("\u2713 Validation: no issues", EditorStyles.miniLabel);
+            return;
+        }
+        EditorGUILayout.LabelField($"\u26A0 Validation: {issues.Count} issue(s)", EditorStyles.boldLabel);
+        foreach (var s in issues)
+            EditorGUILayout.LabelField("    " + s, EditorStyles.miniLabel);
+    }
+
+    List<string> CollectIssues()
+    {
+        var list = new List<string>();
+        int total = Mathf.Max(1, _def.TotalFrames);
+
+        if (_def.Clip == null) list.Add("No Clip assigned.");
+
+        CheckRange(list, "Hit", _def.HitWindows?.Length ?? 0, i => _def.HitWindows[i].StartFrame, i => _def.HitWindows[i].EndFrame, total);
+        CheckRange(list, "Cancel", _def.CancelWindows?.Length ?? 0, i => _def.CancelWindows[i].StartFrame, i => _def.CancelWindows[i].EndFrame, total);
+        CheckRange(list, "Invuln", _def.InvulnWindows?.Length ?? 0, i => _def.InvulnWindows[i].StartFrame, i => _def.InvulnWindows[i].EndFrame, total);
+        CheckRange(list, "Motion", _def.MotionImpulses?.Length ?? 0, i => _def.MotionImpulses[i].StartFrame, i => _def.MotionImpulses[i].EndFrame, total);
+
+        if (_def.CancelWindows != null)
+            for (int i = 0; i < _def.CancelWindows.Length; i++)
+                if (_def.CancelWindows[i].AllowedInto == CancelTag.None)
+                    list.Add($"Cancel[{i}]  AllowedInto = None (cancels nothing).");
+
+        if (_def.RangedFires != null)
+            for (int i = 0; i < _def.RangedFires.Length; i++)
+            {
+                int f = _def.RangedFires[i].Frame;
+                if (f < 0 || f > total) list.Add($"Ranged[{i}]  Frame {f} outside [0, {total}].");
+            }
+
+        return list;
+    }
+
+    static void CheckRange(List<string> list, string name, int count, System.Func<int, int> start, System.Func<int, int> end, int total)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            int s = start(i), e = end(i);
+            if (s > e) list.Add($"{name}[{i}]  Start({s}) > End({e}).");
+            else if (s < 0 || e > total) list.Add($"{name}[{i}]  range [{s},{e}] outside [0, {total}].");
+        }
+    }
+
+    // ------------------------------------------------------------------ toolbar
     void DrawToolbar()
     {
         using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
@@ -154,6 +217,7 @@ public class ActionEditorWindow : EditorWindow
         }
     }
 
+    // --------------------------------------------------------------- preview bar
     void DrawPreviewBar()
     {
         using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
@@ -198,6 +262,7 @@ public class ActionEditorWindow : EditorWindow
         }
     }
 
+    // ------------------------------------------------------------------ preview
     void EnterPreview() { _lastSampledFrame = -1; Repaint(); SceneView.RepaintAll(); }
 
     void ExitPreview()
@@ -250,6 +315,7 @@ public class ActionEditorWindow : EditorWindow
         }
     }
 
+    // ------------------------------------------------------------ layout/packing
     void BuildLayout()
     {
         float y = RulerH;
@@ -294,6 +360,7 @@ public class ActionEditorWindow : EditorWindow
         return Mathf.Max(1, rowEnd.Count);
     }
 
+    // ----------------------------------------------------------------- timeline
     void DrawTimeline(Rect area)
     {
         int total = Mathf.Max(1, _def.TotalFrames);
@@ -325,7 +392,6 @@ public class ActionEditorWindow : EditorWindow
     int XToFrame(float localX) => Mathf.RoundToInt((localX + _scrollX) / _pixelsPerFrame);
     int LabelStep() => _pixelsPerFrame >= 24 ? 1 : _pixelsPerFrame >= 12 ? 5 : 10;
     float LaneRowY(int lane, int row) => _laneY[lane] + LanePad + row * (RowH + RowGap);
-
 
     void DrawRuler(int total)
     {
@@ -437,6 +503,7 @@ public class ActionEditorWindow : EditorWindow
         }
     }
 
+    // -------------------------------------------------------------- interaction
     void HandleMouse(Rect interact, int total)
     {
         _timelineCtrl = GUIUtility.GetControlID(FocusType.Passive);
@@ -559,6 +626,7 @@ public class ActionEditorWindow : EditorWindow
         Repaint();
     }
 
+    // -------------------------------------------------- struct field access
     int GetStart(int lane, int i)
     {
         switch (lane)
@@ -597,6 +665,7 @@ public class ActionEditorWindow : EditorWindow
         }
     }
 
+    // ------------------------------------------------------------- add / delete
     void AddWindow(int lane, int total)
     {
         EnsureSO(); _so.Update();
@@ -626,6 +695,7 @@ public class ActionEditorWindow : EditorWindow
         Repaint();
     }
 
+    // --------------------------------------------------------------- inspector
     void DrawInspector()
     {
         EditorGUILayout.Space(4);
@@ -645,10 +715,91 @@ public class ActionEditorWindow : EditorWindow
             {
                 EditorGUILayout.LabelField($"{Lanes[_selLane].Name} Window [{_selIndex}]", EditorStyles.boldLabel);
                 GUILayout.FlexibleSpace();
+                if (_selLane == 3) // Motion lane: seed VX/VZ/VY from the clip's root motion
+                {
+                    using (new EditorGUI.DisabledScope(_def.Clip == null || _previewTarget == null))
+                        if (GUILayout.Button("Extract Root Motion", GUILayout.Width(150))) { ExtractRootMotion(_selIndex); return; }
+                }
                 if (GUILayout.Button("Delete", GUILayout.Width(60))) { DeleteSelected(); return; }
             }
             EditorGUILayout.PropertyField(arr.GetArrayElementAtIndex(_selIndex), includeChildren: true);
         }
         _so.ApplyModifiedProperties();
+    }
+
+    // ----------------------------------------------------------- root motion
+    // Bake the clip's root-motion VELOCITY into the selected MotionImpulse's VX/VZ/VY,
+    // keyed on the runtime's normalized window phase t in [0,1] (matches Apply()).
+    // Space matches Apply(): VX/VZ are character-local (relative to the move's start
+    // facing), VY is world-vertical. Magnitude is the clip's real-time speed (units/s);
+    // if the action plays over a different duration than the clip, scale the curves to
+    // taste. Humanoid: needs "Root Transform Position" baked in the clip import, else no
+    // root motion is detected and the curves are left unchanged.
+    void ExtractRootMotion(int impulseIndex)
+    {
+        var clip = _def.Clip;
+        if (clip == null || _previewTarget == null) return;
+
+        var m = _def.MotionImpulses[impulseIndex];
+        int s = m.StartFrame, e = m.EndFrame;
+        int span = Mathf.Max(e - s, 1);
+        var tf = _previewTarget.transform;
+
+        bool wasAnim = AnimationMode.InAnimationMode();
+        if (!wasAnim) AnimationMode.StartAnimationMode();
+
+        Sample(clip, MapFrameToClipTime(s), tf);
+        Quaternion invStart = Quaternion.Inverse(tf.rotation);
+
+        var kx = new List<Keyframe>();
+        var ky = new List<Keyframe>();
+        var kz = new List<Keyframe>();
+        float maxSpeed = 0f;
+
+        for (int f = s; f <= e; f++)
+        {
+            float ct0 = MapFrameToClipTime(f);
+            float ct1 = MapFrameToClipTime(f + 1);
+            Sample(clip, ct0, tf); Vector3 p0 = tf.position;
+            Sample(clip, ct1, tf); Vector3 p1 = tf.position;
+
+            float dt = Mathf.Max(ct1 - ct0, 1e-4f);
+            Vector3 worldVel = (p1 - p0) / dt;
+            Vector3 localVel = invStart * worldVel;
+
+            float tn = (float)(f - s) / span;
+            kx.Add(new Keyframe(tn, localVel.x));
+            kz.Add(new Keyframe(tn, localVel.z));
+            ky.Add(new Keyframe(tn, worldVel.y));
+            maxSpeed = Mathf.Max(maxSpeed, worldVel.magnitude);
+        }
+
+        if (!wasAnim) AnimationMode.StopAnimationMode();
+        _lastSampledFrame = -1; // force the preview to re-sample at _currentFrame
+
+        if (maxSpeed < 1e-3f)
+        {
+            EditorUtility.DisplayDialog("Extract Root Motion",
+                "No root motion detected over this window (the root stays in place).\n\n" +
+                "Humanoid clips need 'Root Transform Position' baked in the clip's import settings, " +
+                "or the clip simply has no root motion. Curves left unchanged.", "OK");
+            return;
+        }
+
+        Undo.RecordObject(_def, "Extract Root Motion");
+        _def.MotionImpulses[impulseIndex].VX = new AnimationCurve(kx.ToArray());
+        _def.MotionImpulses[impulseIndex].VZ = new AnimationCurve(kz.ToArray());
+        if (m.DrivesVertical)
+            _def.MotionImpulses[impulseIndex].VY = new AnimationCurve(ky.ToArray());
+        EditorUtility.SetDirty(_def);
+        EnsureSO(); _so.Update();
+        Repaint();
+    }
+
+    static void Sample(AnimationClip clip, float time, Transform target)
+    {
+        AnimationMode.BeginSampling();
+        AnimationMode.SampleAnimationClip(target.gameObject, clip, Mathf.Clamp(time, 0f, clip.length));
+        AnimationMode.EndSampling();
     }
 }

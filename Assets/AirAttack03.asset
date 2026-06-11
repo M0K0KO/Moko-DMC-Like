@@ -16,105 +16,31 @@ MonoBehaviour:
   AllowGrounded: 1
   AllowAir: 0
   Clip: {fileID: 7400000, guid: af3c0d90576b6e245a4bc10082adef13, type: 2}
-  TotalFrames: 72
+  TotalFrames: 55
   NextOnAttack: {fileID: 0}
   HitWindows:
-  - StartFrame: 10
-    EndFrame: 16
+  - StartFrame: 13
+    EndFrame: 19
     BoxOffset: {x: 0, y: 1, z: 1}
     BoxSize: {x: 1.2, y: 1.5, z: 1.5}
     Damage: 10
-    HitstopFrames: 5
+    HitstopFrames: 3
     Reaction: 1
     Launch: {x: 0, y: 2, z: 0}
-  - StartFrame: 28
-    EndFrame: 34
+  - StartFrame: 33
+    EndFrame: 39
     BoxOffset: {x: 0, y: 1, z: 1}
     BoxSize: {x: 1.2, y: 1.5, z: 1.5}
     Damage: 10
-    HitstopFrames: 5
+    HitstopFrames: 3
     Reaction: 1
     Launch: {x: 0, y: 2, z: 0}
   CancelWindows: []
+  InvulnWindows: []
   MotionImpulses:
   - DrivesVertical: 1
-    StartFrame: 4
-    EndFrame: 15
-    VX:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    VY:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 4.5
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: -9.761252
-        outSlope: -9.761252
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.04208201
-        outWeight: 0.005029967
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    VZ:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  - DrivesVertical: 1
-    StartFrame: 30
-    EndFrame: 40
+    StartFrame: 29
+    EndFrame: 41
     VX:
       serializedVersion: 2
       m_Curve:
@@ -187,3 +113,79 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+  - DrivesVertical: 1
+    StartFrame: 11
+    EndFrame: 19
+    VX:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    VY:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 6
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -9.761252
+        outSlope: -9.761252
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.04208201
+        outWeight: 0.005029967
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    VZ:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  RangedFires: []

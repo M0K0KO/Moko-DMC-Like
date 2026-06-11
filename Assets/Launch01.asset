@@ -15,8 +15,8 @@ MonoBehaviour:
   Type: 2
   AllowGrounded: 1
   AllowAir: 0
-  Clip: {fileID: 7400000, guid: 8d0767ef8e56d734abb160511ffa757f, type: 2}
-  TotalFrames: 36
+  Clip: {fileID: 7400000, guid: cf3aa9de4679d4b46a764fd9152903b5, type: 2}
+  TotalFrames: 60
   NextOnAttack: {fileID: 11400000, guid: 6027db4ea9c845541942d102c5c0a025, type: 2}
   HitWindows:
   - StartFrame: 11
@@ -29,13 +29,13 @@ MonoBehaviour:
     Launch: {x: 0, y: 7, z: 0}
   CancelWindows:
   - StartFrame: 22
-    EndFrame: 36
+    EndFrame: 40
     AllowedInto: 1
   InvulnWindows: []
   MotionImpulses:
   - DrivesVertical: 1
-    StartFrame: 10
-    EndFrame: 30
+    StartFrame: 15
+    EndFrame: 29
     VX:
       serializedVersion: 2
       m_Curve: []
@@ -72,3 +72,61 @@ MonoBehaviour:
       m_PreInfinity: 0
       m_PostInfinity: 0
       m_RotationOrder: 0
+  - DrivesVertical: 1
+    StartFrame: 4
+    EndFrame: 14
+    VX:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 0
+      m_PostInfinity: 0
+      m_RotationOrder: 0
+    VY:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.9888916
+        value: 0.004760742
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    VZ:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 15
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -29.725475
+        outSlope: -29.725475
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.064079165
+        outWeight: 0.005029967
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+  RangedFires: []

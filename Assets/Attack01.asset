@@ -16,7 +16,7 @@ MonoBehaviour:
   AllowGrounded: 1
   AllowAir: 0
   Clip: {fileID: 7400000, guid: 2ba245cca9eb6ff4985596487197ade7, type: 2}
-  TotalFrames: 51
+  TotalFrames: 40
   NextOnAttack: {fileID: 11400000, guid: 7e286b08cb6500a428243057cf648a97, type: 2}
   HitWindows:
   - StartFrame: 6
@@ -24,21 +24,21 @@ MonoBehaviour:
     BoxOffset: {x: 0, y: 1, z: 0.7}
     BoxSize: {x: 1, y: 1, z: 1}
     Damage: 10
-    HitstopFrames: 8
+    HitstopFrames: 4
     Reaction: 0
     Launch: {x: 0, y: 0, z: 0}
   CancelWindows:
   - StartFrame: 15
-    EndFrame: 26
+    EndFrame: 30
     AllowedInto: 1
   - StartFrame: 15
-    EndFrame: 51
+    EndFrame: 40
     AllowedInto: 2
   InvulnWindows: []
   MotionImpulses:
   - DrivesVertical: 0
     StartFrame: 4
-    EndFrame: 13
+    EndFrame: 14
     VX:
       serializedVersion: 2
       m_Curve:
