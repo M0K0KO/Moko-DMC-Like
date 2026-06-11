@@ -20,7 +20,7 @@ MonoBehaviour:
   NextOnAttack: {fileID: 11400000, guid: 7e286b08cb6500a428243057cf648a97, type: 2}
   HitWindows:
   - StartFrame: 6
-    EndFrame: 16
+    EndFrame: 18
     BoxOffset: {x: 0, y: 1, z: 0.7}
     BoxSize: {x: 1, y: 1, z: 1}
     Damage: 10
@@ -38,7 +38,7 @@ MonoBehaviour:
   MotionImpulses:
   - DrivesVertical: 0
     StartFrame: 4
-    EndFrame: 12
+    EndFrame: 13
     VX:
       serializedVersion: 2
       m_Curve:
@@ -147,3 +147,4 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+  RangedFires: []
