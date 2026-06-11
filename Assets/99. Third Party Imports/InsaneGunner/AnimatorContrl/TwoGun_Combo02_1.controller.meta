@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 01bd4dbe939b28e46957d9314194c87c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/TwoGun_Combo02_1.controller
+  uploadId: 702793

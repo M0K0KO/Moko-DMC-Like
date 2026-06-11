@@ -11,6 +11,7 @@ public class InputReader : MonoBehaviour
 
     private PlayerInput _actions;
     private bool _attackEdge;
+    private bool _shootEdge;
     private bool _jumpEdge;
     private bool _launcherEdge;
     private bool _dodgeEdge;
@@ -26,6 +27,7 @@ public class InputReader : MonoBehaviour
         _actions.Gameplay.Move.performed += OnMove;
         _actions.Gameplay.Move.canceled += OnMove;
         _actions.Gameplay.Attack.performed += OnAttack;
+        _actions.Gameplay.Shoot.performed += OnShoot;
         _actions.Gameplay.Jump.performed += OnJump;
         _actions.Gameplay.Launcher.performed += OnLauncher;
         _actions.Gameplay.Dodge.performed += OnDodge;
@@ -37,6 +39,7 @@ public class InputReader : MonoBehaviour
         _actions.Gameplay.Move.performed -= OnMove;
         _actions.Gameplay.Move.canceled -= OnMove;
         _actions.Gameplay.Attack.performed -= OnAttack;
+        _actions.Gameplay.Shoot.performed -= OnShoot;
         _actions.Gameplay.Jump.performed -= OnJump;
         _actions.Gameplay.Launcher.performed -= OnLauncher;
         _actions.Gameplay.Dodge.performed -= OnDodge;
@@ -50,6 +53,7 @@ public class InputReader : MonoBehaviour
     }
 
     private void OnAttack(InputAction.CallbackContext _) => _attackEdge = true;
+    private void OnShoot(InputAction.CallbackContext _) => _shootEdge = true;
     private void OnMove(InputAction.CallbackContext ctx) => MoveValue = ctx.ReadValue<Vector2>();
     private void OnJump(InputAction.CallbackContext ctx) => _jumpEdge = true;
     private void OnLauncher(InputAction.CallbackContext ctx) => _launcherEdge = true;
@@ -64,6 +68,15 @@ public class InputReader : MonoBehaviour
             return false;
 
         _attackEdge = false;
+        return true;
+    }
+
+    public bool ConsumeShootEdge()
+    {
+        if (!_shootEdge)
+            return false;
+
+        _shootEdge = false;
         return true;
     }
 

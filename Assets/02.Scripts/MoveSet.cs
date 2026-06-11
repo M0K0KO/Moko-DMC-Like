@@ -24,6 +24,9 @@ public class MoveEntry
     public LockCondition Lock = LockCondition.Any;
     public ActionDefinition FromMove; // null = neutral, combo link
     public ActionDefinition Result; // action to perform
+
+    // special swap skills
+    public bool RequireJustSwapped = false;
 }
 
 [CreateAssetMenu(menuName = "Moko/Move Set")]

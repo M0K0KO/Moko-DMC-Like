@@ -10,9 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03c9c258fd48b9d42a58697db58434fb, type: 3}
-  m_Name: GuantletMoveSet
+  m_Name: Guantlet_MoveSet
   m_EditorClassIdentifier: 
   Entries:
+  - Trigger: 4
+    Dir: 0
+    Loco: 1
+    Lock: 0
+    FromMove: {fileID: 0}
+    Result: {fileID: 11400000, guid: 259e0d361dc0f7047a343f42b6db786d, type: 2}
   - Trigger: 4
     Dir: 0
     Loco: 1
@@ -43,12 +49,6 @@ MonoBehaviour:
     Lock: 0
     FromMove: {fileID: 11400000, guid: 7e286b08cb6500a428243057cf648a97, type: 2}
     Result: {fileID: 11400000, guid: a4f9142b6b1625745bd03bc274828cff, type: 2}
-  - Trigger: 3
-    Dir: 0
-    Loco: 1
-    Lock: 0
-    FromMove: {fileID: 0}
-    Result: {fileID: 11400000, guid: 259e0d361dc0f7047a343f42b6db786d, type: 2}
   - Trigger: 1
     Dir: 0
     Loco: 2

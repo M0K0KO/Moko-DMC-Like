@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 95200203574323842b7c4686789babbe
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/attack_Avoid_Back_Combo.controller
+  uploadId: 702793

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7ac4371eda9b7414791af550b4ea7323
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/attack_DashATK_left.controller
+  uploadId: 702793

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2c507330dc3840c4aa5047726a7ef98a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/attack_JumpAtk02_back.controller
+  uploadId: 702793

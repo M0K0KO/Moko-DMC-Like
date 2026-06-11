@@ -7,4 +7,7 @@ public enum InputId
     Launcher,
     Dodge,
     LockOn,
+
+    SwapMelee,
+    SwapRanged,
 }

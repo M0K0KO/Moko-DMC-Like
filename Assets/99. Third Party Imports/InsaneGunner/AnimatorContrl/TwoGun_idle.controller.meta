@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2bae0b4aef0cc0b45996a133cd1e1a01
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/TwoGun_idle.controller
+  uploadId: 702793

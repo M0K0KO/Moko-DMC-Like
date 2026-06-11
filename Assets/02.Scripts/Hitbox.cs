@@ -52,6 +52,7 @@ public class Hitbox
             for (int i = 0; i < n; i++)
             {
                 var hb = _results[i].GetComponent<Hurtbox>();
+
                 if (hb == null || hb.Owner == null)
                     continue;
 

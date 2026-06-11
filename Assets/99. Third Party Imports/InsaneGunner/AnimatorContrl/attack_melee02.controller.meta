@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 203e322fc6105f2468dd079ce8cebc20
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/attack_melee02.controller
+  uploadId: 702793

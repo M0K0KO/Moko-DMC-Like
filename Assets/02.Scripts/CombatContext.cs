@@ -19,4 +19,7 @@ public class CombatContext
 
     public Weapon CurrentMelee;
     public Weapon CurrentRanged;
+
+    public bool JustSwapped;
+    public int SwapWindowEndFrame;
 }

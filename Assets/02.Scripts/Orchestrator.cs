@@ -12,8 +12,8 @@ public class Orchestrator : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void SetHitJuice(HitResolution res)
+    public void SetHitJuice()
     {
-        res.OnHit += juice.OnHit;
+        CombatFeedback.OnHit += juice.OnHit;
     }
 }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 303d6531d65a0a44a903a810aeddff14
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/attack_shotUp.controller
+  uploadId: 702793

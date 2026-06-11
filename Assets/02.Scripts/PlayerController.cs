@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Configuration;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,10 +12,10 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
     [SerializeField] LockOnConfig _lockOnConfig = new();
     LockOnController _lockOn;
 
-    [SerializeField] private LayerMask _enemyMask;
+    [SerializeField] private LayerMask _enemyHurtboxMask;
 
-    [SerializeField] Weapon _melee;
-    [SerializeField] Weapon _ranged;
+    [SerializeField] Weapon[] _meleeLoadout;
+    [SerializeField] Weapon[] _rangedLoadout;
     [SerializeField] ActionDefinition _dodgeDef;
     [SerializeField] ActionDefinition _launchedDef;
     [SerializeField] ActionDefinition _hitstunDef;
@@ -34,6 +32,8 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
     private AnimationDriver _driver;
     private HitResolution _hitResolution;
     private CombatContext _ctx;
+    private RangedFirer _rangedFirer;
+    private WeaponLoadout _loadout;
 
     private TargetProvider _targetProvider;
     private int _lastPlayId;
@@ -64,8 +64,6 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
     {
         // setup subsystems, _ctx
         _ctx = new CombatContext();
-        _ctx.CurrentMelee = _melee;
-        _ctx.CurrentRanged = _ranged;
 
         _inputReader = GetComponent<InputReader>();
         _inputBuffer = new InputBuffer();
@@ -74,7 +72,8 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
 
         _runner = new ActionTimelineRunner(_motor, _ctx);
 
-        _resolver = new ActionResolver(_inputBuffer, _runner, _ctx, _dodgeDef);
+        _loadout = new WeaponLoadout(_ctx, _meleeLoadout, _rangedLoadout);
+        _resolver = new ActionResolver(_inputBuffer, _runner, _ctx, _dodgeDef, _loadout);
 
         _cam = Camera.main;
         _locomotion = new Locomotion(_inputReader, _inputBuffer, _motor, _ctx, _cam);
@@ -83,8 +82,10 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
         _driver = new AnimationDriver(_animator, _runner, _motor, _ctx);
 
         _hitEvents = new List<HitEvent>();
-        _hitbox = new Hitbox(transform, _runner, _hitEvents, _enemyMask);
+        _hitbox = new Hitbox(transform, _runner, _hitEvents, _enemyHurtboxMask);
         _hitResolution = new HitResolution(_hitEvents, this);
+
+        _rangedFirer = new RangedFirer(_runner, transform, _enemyHurtboxMask);
 
         _targetProvider = GetComponent<TargetProvider>();
 
@@ -95,7 +96,7 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
 
     private void Start()
     {
-        Orchestrator.Instance.SetHitJuice(_hitResolution);
+        Orchestrator.Instance.SetHitJuice();
     }
 
     private void Update()
@@ -141,6 +142,10 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
         if (_inputReader.ConsumeAttackEdge())
         {
             _inputBuffer.Push(InputId.Attack, _currentFrame);
+        }
+        if (_inputReader.ConsumeShootEdge())
+        {
+            _inputBuffer.Push(InputId.Shoot, _currentFrame);
         }
         if (_inputReader.ConsumeJumpEdge())
         {
@@ -190,6 +195,9 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
 
         // 7) Hitbox.Tick : OverlapBox Query -> Fire Hit Event
         _hitbox.Tick();
+
+        // 7.5) Projectile Spawner
+        _rangedFirer.Tick(_currentFrame);
 
         // 8) HitResolution : Damage, Launch, Hitstop Application
         _hitResolution.Tick();

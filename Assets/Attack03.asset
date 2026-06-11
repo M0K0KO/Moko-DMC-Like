@@ -31,7 +31,7 @@ MonoBehaviour:
   - StartFrame: 24
     EndFrame: 72
     AllowedInto: 2
-  - StartFrame: 24
+  - StartFrame: 35
     EndFrame: 72
     AllowedInto: 1
   InvulnWindows: []
@@ -258,3 +258,4 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+  ProjectileSpawns: []

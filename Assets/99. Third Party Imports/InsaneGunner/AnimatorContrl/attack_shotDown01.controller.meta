@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e860be023d3dccd418b7f52e7b8a15b6
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/attack_shotDown01.controller
+  uploadId: 702793

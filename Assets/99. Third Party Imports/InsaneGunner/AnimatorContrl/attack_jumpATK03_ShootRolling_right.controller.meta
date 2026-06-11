@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cbe7ca47fe366544bb69fb4e220d12a9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/attack_jumpATK03_ShootRolling_right.controller
+  uploadId: 702793

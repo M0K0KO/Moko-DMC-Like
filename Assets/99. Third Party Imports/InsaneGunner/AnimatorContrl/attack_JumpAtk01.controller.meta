@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8f5616123195ea24caff81be0d12ddea
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/attack_JumpAtk01.controller
+  uploadId: 702793

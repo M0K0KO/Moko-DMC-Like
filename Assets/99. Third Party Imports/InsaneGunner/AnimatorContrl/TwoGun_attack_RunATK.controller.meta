@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4d7cbaf7d0a363b488591e23c48b32d9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/TwoGun_attack_RunATK.controller
+  uploadId: 702793

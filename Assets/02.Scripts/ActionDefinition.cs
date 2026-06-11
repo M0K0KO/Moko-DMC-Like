@@ -50,6 +50,30 @@ public enum CancelTag
     Dodge = 2 
 }
 
+
+public enum RangedMode
+{
+    Hitscan, Projectile
+}
+
+[System.Serializable]
+public struct RangedFire
+{
+    public int Frame;
+    public RangedMode Mode;
+    public Vector3 LocalOffset;
+
+    public int Damage;
+    public int HitstopFrames;
+    public ReactionType Reaction;
+    public Vector3 Launch;
+
+    public float Range;
+    public float CastRadius;
+
+    public Projectile Prefab;
+}
+
 [CreateAssetMenu(menuName = "Moko/Action Definition")]
 public class ActionDefinition : ScriptableObject
 {
@@ -64,4 +88,5 @@ public class ActionDefinition : ScriptableObject
     public CancelWindow[] CancelWindows;
     public InvulnWindow[] InvulnWindows;
     public MotionImpulse[] MotionImpulses;
+    public RangedFire[] RangedFires;
 }

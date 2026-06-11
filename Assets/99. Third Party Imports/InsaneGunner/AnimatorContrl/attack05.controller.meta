@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7b8316c5016537f45bc63e3884c2a2aa
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 142038
+  packageName: Insane Gunner AnimSet
+  packageVersion: 1.21
+  assetPath: Assets/InsaneGunner/AnimatorContrl/attack05.controller
+  uploadId: 702793
