@@ -88,7 +88,10 @@ public class ActionEditorWindow : EditorWindow
         return true;
     }
 
-    void OnEnable() { EditorApplication.update += OnEditorUpdate; }
+    // Currently-open ActionDefinition, read by the Move Set editor to highlight matching rows.
+    public static ActionDefinition Current { get; private set; }
+
+    void OnEnable() { EditorApplication.update += OnEditorUpdate; if (_def != null) Current = _def; }
     void OnDisable() { EditorApplication.update -= OnEditorUpdate; ExitPreview(); }
 
     void SetTarget(ActionDefinition def)
@@ -96,6 +99,7 @@ public class ActionEditorWindow : EditorWindow
         _def = def; _so = def != null ? new SerializedObject(def) : null;
         _currentFrame = 0; _scrollX = 0; _selLane = _selIndex = -1; _drag = DragMode.None;
         _lastSampledFrame = -1;
+        Current = def;
         Repaint();
     }
 
@@ -699,13 +703,23 @@ public class ActionEditorWindow : EditorWindow
     void DrawInspector()
     {
         EditorGUILayout.Space(4);
+        EnsureSO(); _so.Update();
+
         if (_selLane < 0 || _selIndex < 0)
         {
-            EditorGUILayout.LabelField("Drag edges to resize \u00B7 drag body to move \u00B7 click empty to seek \u00B7 +/Del to add/remove \u00B7 Space to play", EditorStyles.miniLabel);
+            EditorGUILayout.LabelField("Action", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(_so.FindProperty("Type"));
+            EditorGUILayout.PropertyField(_so.FindProperty("AllowGrounded"));
+            EditorGUILayout.PropertyField(_so.FindProperty("AllowAir"));
+            EditorGUILayout.PropertyField(_so.FindProperty("Clip"));
+            EditorGUILayout.PropertyField(_so.FindProperty("TotalFrames"));
+            EditorGUILayout.PropertyField(_so.FindProperty("NextOnAttack"));
+            EditorGUILayout.Space(2);
+            EditorGUILayout.LabelField("Select a window bar to edit it \u00B7 drag edges/body \u00B7 +/Del \u00B7 Space to play", EditorStyles.miniLabel);
+            _so.ApplyModifiedProperties();
             return;
         }
 
-        EnsureSO(); _so.Update();
         var arr = _so.FindProperty(Lanes[_selLane].Prop);
         if (arr == null || _selIndex >= arr.arraySize) { _selLane = _selIndex = -1; return; }
 
