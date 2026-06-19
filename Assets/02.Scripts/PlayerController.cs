@@ -106,8 +106,8 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
 
         if (Input.GetKeyDown(KeyCode.P)) _debugPaused = !_debugPaused;
         if (Input.GetKeyDown(KeyCode.RightBracket)) _stepOnce = true;
-        if (Input.GetKeyDown(KeyCode.Alpha1)) Time.timeScale = 1f;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) Time.timeScale = 0.2f;
+        if (Input.GetKeyDown(KeyCode.Alpha0)) Time.timeScale = 1f;
+        if (Input.GetKeyDown(KeyCode.Alpha9)) Time.timeScale = 0.2f;
     }
 
     private void FixedUpdate()
@@ -158,6 +158,14 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
         if (_inputReader.ConsumeDodgeEdge())
         {
             _inputBuffer.Push(InputId.Dodge, _currentFrame);
+        }
+        if (_inputReader.ConsumeSwapMeleeEdge())
+        {
+            _inputBuffer.Push(InputId.SwapMelee, _currentFrame);
+        }
+        if (_inputReader.ConsumeSwapRangedEdge())
+        {
+            _inputBuffer.Push(InputId.SwapRanged, _currentFrame);
         }
 
         // 2) Runner.Advance : currentFrame++ & CancelFlags state update
@@ -236,6 +244,8 @@ public class PlayerController : MonoBehaviour, IHitstopReceiver, IDamageable
         var r = _runner; var c = _ctx; var m = _motor; var l = _locomotion;
         string s =
             $"Invuln      : {c.Invulnerable}\n" +
+            $"Melee       : {c.CurrentMelee.DisplayName}" + 
+            $"Ranged      : {c.CurrentRanged.DisplayName}" + 
             $"ActionState : {c.ActionState}\n" +
             $"LocoState   : {(l.State)}\n" +
             $"Action      : {(r.IsPlaying ? r.Current.name : "-")}\n" +

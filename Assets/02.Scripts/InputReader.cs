@@ -15,6 +15,8 @@ public class InputReader : MonoBehaviour
     private bool _jumpEdge;
     private bool _launcherEdge;
     private bool _dodgeEdge;
+    private bool _swapMeleeEdge;
+    private bool _swapRangedEdge;
 
     private void Awake()
     {
@@ -32,6 +34,8 @@ public class InputReader : MonoBehaviour
         _actions.Gameplay.Launcher.performed += OnLauncher;
         _actions.Gameplay.Dodge.performed += OnDodge;
         _actions.Gameplay.LockOn.performed += OnLockOn;
+        _actions.Gameplay.SwapMelee.performed += OnSwapMelee;
+        _actions.Gameplay.SwapRanged.performed += OnSwapRanged;
     }
 
     private void OnDisable()
@@ -44,6 +48,8 @@ public class InputReader : MonoBehaviour
         _actions.Gameplay.Launcher.performed -= OnLauncher;
         _actions.Gameplay.Dodge.performed -= OnDodge;
         _actions.Gameplay.LockOn.performed -= OnLockOn;
+        _actions.Gameplay.SwapMelee.performed -= OnSwapMelee;
+        _actions.Gameplay.SwapRanged.performed -= OnSwapRanged;
         _actions.Gameplay.Disable();
     }
 
@@ -59,6 +65,8 @@ public class InputReader : MonoBehaviour
     private void OnLauncher(InputAction.CallbackContext ctx) => _launcherEdge = true;
     private void OnDodge(InputAction.CallbackContext ctx) => _dodgeEdge = true;
     private void OnLockOn(InputAction.CallbackContext ctx) => LockOnPressed = true;
+    private void OnSwapMelee(InputAction.CallbackContext ctx) => _swapMeleeEdge = true;
+    private void OnSwapRanged(InputAction.CallbackContext ctx) => _swapRangedEdge = true;
 
     public void AddLockSwitchDeltaX(float delta) => LockSwitchDeltaX += delta;
 
@@ -119,5 +127,21 @@ public class InputReader : MonoBehaviour
         var v = LockSwitchDeltaX; 
         LockSwitchDeltaX = 0f; 
         return v; 
+    }
+    public bool ConsumeSwapMeleeEdge() 
+    {
+        if (!_swapMeleeEdge)
+            return false;
+
+        _swapMeleeEdge = false;
+        return true;
+    }
+    public bool ConsumeSwapRangedEdge() 
+    {
+        if (!_swapRangedEdge)
+            return false;
+
+        _swapRangedEdge = false;
+        return true;
     }
 }

@@ -13,7 +13,7 @@ using UnityEditor.IMGUI.Controls;
 ///   - double-click ¡æ open the Result in the ActionEditor
 ///   - left color stripe per row by Trigger; rows whose Result is open in the ActionEditor are highlighted
 ///
-/// Data model is unchanged (flat MoveEntry[] edited via SerializedProperty -> automatic Undo).
+/// Data model is unchanged (flat MoveEntry[] edited via SerializedProperty ¡æ automatic Undo).
 /// Dodge/Swap are hardcoded in ActionResolver (not data), so they are NOT edited here.
 ///
 /// Place under an "Editor" folder. Open: menu "Moko/Move Set Editor" or double-click a MoveSet.
@@ -59,6 +59,19 @@ public class MoveSetEditorWindow : EditorWindow
         };
         _tree.Reload();
         _tree.ExpandAll();
+        Undo.undoRedoPerformed += OnUndoRedo;
+    }
+
+    void OnDisable() { Undo.undoRedoPerformed -= OnUndoRedo; }
+
+    // Undo/redo can add/remove/reorder entries or change FromMove/Result - all of which
+    // alter the tree STRUCTURE, and BuildRoot only runs on Reload. Rebuild and repaint.
+    void OnUndoRedo()
+    {
+        if (_moveSet == null || _tree == null) { Repaint(); return; }
+        _so?.Update();
+        _tree.Reload();
+        Repaint();
     }
 
     // repaint while open so the ActionEditor-driven highlight stays roughly live
@@ -97,7 +110,11 @@ public class MoveSetEditorWindow : EditorWindow
         Rect treeRect = GUILayoutUtility.GetRect(0, 0, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
         _tree.OnGUI(treeRect);
 
-        if (_tree.ConsumeReload()) _so.ApplyModifiedProperties();   // commit Result change before rebuild
+        if (_tree.ConsumeReload())
+        {
+            _so.ApplyModifiedProperties();   // commit the Result change¡¦
+            _tree.Reload();                  // ¡¦then rebuild - Result defines the tree structure
+        }
         _so.ApplyModifiedProperties();
     }
 
@@ -165,6 +182,7 @@ public class MoveSetEditorWindow : EditorWindow
         e.FindPropertyRelative("Lock").enumValueIndex = (int)LockCondition.Any;
         e.FindPropertyRelative("RequireJustSwapped").boolValue = false;
         _so.ApplyModifiedProperties();
+        Undo.SetCurrentGroupName("Add Move Entry");
 
         int idx = arr.arraySize - 1;
         _tree.Reload();
@@ -178,6 +196,7 @@ public class MoveSetEditorWindow : EditorWindow
         if (idx < 0 || idx >= arr.arraySize) return;
         arr.InsertArrayElementAtIndex(idx);   // arr[idx] becomes a copy; original shifts to idx+1
         _so.ApplyModifiedProperties();
+        Undo.SetCurrentGroupName("Duplicate Move Entry");
         _tree.Reload();
         _tree.SelectEntry(idx);
     }
@@ -189,6 +208,7 @@ public class MoveSetEditorWindow : EditorWindow
         if (idx < 0 || idx >= arr.arraySize) return;
         arr.DeleteArrayElementAtIndex(idx);
         _so.ApplyModifiedProperties();
+        Undo.SetCurrentGroupName("Delete Move Entry");
         _tree.SetSelection(new List<int>());
         _tree.Reload();
     }
@@ -201,6 +221,7 @@ public class MoveSetEditorWindow : EditorWindow
         var arr = _so.FindProperty("Entries");
         arr.MoveArrayElement(idx, j);
         _so.ApplyModifiedProperties();
+        Undo.SetCurrentGroupName("Change Move Priority");
         _tree.Reload();
         _tree.SelectEntry(j);
     }
@@ -232,15 +253,11 @@ public class MoveSetEditorWindow : EditorWindow
     // drag-drop: reparent `dragged` under `newParent` (null = neutral), place at sibling slot `childIndex`.
     void Reparent(int dragged, ActionDefinition newParent, int childIndex)
     {
-        EnsureSO(); _so.Update();
-        var arr = _so.FindProperty("Entries");
-        if (dragged < 0 || dragged >= arr.arraySize) return;
-
-        Undo.RecordObject(_moveSet, "Reparent Move Entry");
-        arr.GetArrayElementAtIndex(dragged).FindPropertyRelative("FromMove").objectReferenceValue = newParent;
-        _so.ApplyModifiedProperties();
-
         var entries = _moveSet.Entries;
+        if (entries == null || dragged < 0 || dragged >= entries.Length) return;
+
+        // sibling slots under the new parent, excluding the dragged entry itself -
+        // reads only OTHER entries' FromMove, so safe to compute before any change
         var siblings = new List<int>();
         for (int k = 0; k < entries.Length; k++)
             if (k != dragged && entries[k].FromMove == newParent) siblings.Add(k);
@@ -248,10 +265,15 @@ public class MoveSetEditorWindow : EditorWindow
         int target = (childIndex < 0 || childIndex >= siblings.Count)
             ? (siblings.Count > 0 ? siblings[siblings.Count - 1] + 1 : dragged)
             : siblings[childIndex];
+        int dst = Mathf.Clamp(dragged < target ? target - 1 : target, 0, entries.Length - 1);
 
-        int dst = Mathf.Clamp(dragged < target ? target - 1 : target, 0, arr.arraySize - 1);
+        // FromMove change + reorder in ONE ApplyModifiedProperties ¡æ one undo step
+        EnsureSO(); _so.Update();
+        var arr = _so.FindProperty("Entries");
+        arr.GetArrayElementAtIndex(dragged).FindPropertyRelative("FromMove").objectReferenceValue = newParent;
         arr.MoveArrayElement(dragged, dst);
         _so.ApplyModifiedProperties();
+        Undo.SetCurrentGroupName("Reparent Move Entry");
 
         _tree.Reload();
         _tree.SelectEntry(dst);

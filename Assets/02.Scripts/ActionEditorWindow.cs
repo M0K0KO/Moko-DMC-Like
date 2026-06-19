@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.IMGUI.Controls;
 
 /// <summary>
 /// Moko Action Editor - STEP 3: AnimationMode pose preview.
@@ -48,7 +49,9 @@ public class ActionEditorWindow : EditorWindow
     enum DragMode { None, Scrub, LeftEdge, RightEdge, Body, Point }
     DragMode _drag = DragMode.None;
     int _grabOffset;
+    bool _dragUndoRegistered;
     int _timelineCtrl;
+    BoxBoundsHandle _boxHandle;
 
     // ---- layout constants ----
     const float RulerH = 20f, RowH = 18f, RowGap = 2f, LanePad = 3f, LaneLabelW = 96f;
@@ -91,8 +94,80 @@ public class ActionEditorWindow : EditorWindow
     // Currently-open ActionDefinition, read by the Move Set editor to highlight matching rows.
     public static ActionDefinition Current { get; private set; }
 
-    void OnEnable() { EditorApplication.update += OnEditorUpdate; if (_def != null) Current = _def; }
-    void OnDisable() { EditorApplication.update -= OnEditorUpdate; ExitPreview(); }
+    void OnEnable()
+    {
+        EditorApplication.update += OnEditorUpdate;
+        Undo.undoRedoPerformed += OnUndoRedo;
+        SceneView.duringSceneGui += OnSceneGUI;
+        _boxHandle = new BoxBoundsHandle();
+        if (_def != null) Current = _def;
+    }
+
+    void OnDisable()
+    {
+        EditorApplication.update -= OnEditorUpdate;
+        Undo.undoRedoPerformed -= OnUndoRedo;
+        SceneView.duringSceneGui -= OnSceneGUI;
+        ExitPreview();
+    }
+
+    // Undo/redo can change window arrays, TotalFrames, or the Clip while this window
+    // is open: refresh the serialized view, re-clamp the playhead, force a resample.
+    void OnUndoRedo()
+    {
+        _so?.Update();
+        _lastSampledFrame = -1;
+        if (_def != null) _currentFrame = Mathf.Clamp(_currentFrame, 0, Mathf.Max(1, _def.TotalFrames));
+        Repaint();
+    }
+
+    // -------------------------------------------------------------- scene gizmo
+    // Edit the selected Hit window's BoxOffset/BoxSize directly in the Scene view.
+    // The box is drawn in character-local space (offset rotated by the character's
+    // rotation, matching MotionImpulse's `transform.rotation * local`). If
+    // HitResolution uses a different space, the numeric fields still work - the
+    // gizmo just anchors to the preview target's transform (or world origin if none).
+    void OnSceneGUI(SceneView sv)
+    {
+        if (_def == null || _def.HitWindows == null || _def.HitWindows.Length == 0) return;
+
+        var t = _previewTarget != null ? _previewTarget.transform : null;
+        Vector3 basePos = t != null ? t.position : Vector3.zero;
+        Quaternion baseRot = t != null ? t.rotation : Quaternion.identity;
+
+        using (new Handles.DrawingScope(Matrix4x4.TRS(basePos, baseRot, Vector3.one)))
+        {
+            // faint context boxes for the non-selected hit windows
+            Handles.color = new Color(0.90f, 0.30f, 0.25f, 0.22f);
+            for (int i = 0; i < _def.HitWindows.Length; i++)
+                if (!(_selLane == 0 && _selIndex == i))
+                    Handles.DrawWireCube(_def.HitWindows[i].BoxOffset, _def.HitWindows[i].BoxSize);
+
+            if (_selLane != 0 || _selIndex < 0 || _selIndex >= _def.HitWindows.Length) return;
+
+            var hw = _def.HitWindows[_selIndex];
+            bool activeFrame = _currentFrame >= hw.StartFrame && _currentFrame <= hw.EndFrame;
+
+            _boxHandle.center = hw.BoxOffset;
+            _boxHandle.size = hw.BoxSize;
+            _boxHandle.wireframeColor = activeFrame ? new Color(1f, 0.45f, 0.35f, 1f) : new Color(1f, 0.45f, 0.35f, 0.6f);
+            _boxHandle.handleColor = new Color(1f, 0.55f, 0.4f, 1f);
+
+            EditorGUI.BeginChangeCheck();
+            _boxHandle.DrawHandle();                                   // face handles ¡æ resize (also shifts center)
+            Vector3 movedOffset = Handles.PositionHandle(hw.BoxOffset, Quaternion.identity);  // arrows ¡æ move offset
+            if (EditorGUI.EndChangeCheck())
+            {
+                bool boxChanged = _boxHandle.center != hw.BoxOffset || _boxHandle.size != hw.BoxSize;
+                Undo.RecordObject(_def, "Edit Hit Box");
+                _def.HitWindows[_selIndex].BoxOffset = boxChanged ? _boxHandle.center : movedOffset;
+                _def.HitWindows[_selIndex].BoxSize = _boxHandle.size;
+                EditorUtility.SetDirty(_def);
+                _so?.Update();
+                Repaint();
+            }
+        }
+    }
 
     void SetTarget(ActionDefinition def)
     {
@@ -528,7 +603,20 @@ public class ActionEditorWindow : EditorWindow
                 {
                     Vector2 local = e.mousePosition - new Vector2(interact.x, interact.y);
                     if (_drag == DragMode.Scrub) SeekTo(local.x, total);
-                    else if (_drag != DragMode.None) DoBarDrag(local.x, total);
+                    else if (_drag != DragMode.None)
+                    {
+                        // Register once per gesture, on the first actual movement and BEFORE
+                        // the first mutation: a plain click leaves no undo entry, and the
+                        // whole drag undoes as ONE step. (RecordObject at MouseDown doesn't
+                        // work here - it diffs at the end of that event, where nothing has
+                        // changed yet, so the later drag mutations were never recorded.)
+                        if (!_dragUndoRegistered)
+                        {
+                            Undo.RegisterCompleteObjectUndo(_def, "Edit Action Window");
+                            _dragUndoRegistered = true;
+                        }
+                        DoBarDrag(local.x, total);
+                    }
                     e.Use();
                 }
                 break;
@@ -536,7 +624,7 @@ public class ActionEditorWindow : EditorWindow
                 if (GUIUtility.hotControl == _timelineCtrl)
                 {
                     if (_drag != DragMode.None && _drag != DragMode.Scrub) { EditorUtility.SetDirty(_def); EnsureSO(); _so.Update(); }
-                    _drag = DragMode.None; GUIUtility.hotControl = 0; e.Use();
+                    _drag = DragMode.None; _dragUndoRegistered = false; GUIUtility.hotControl = 0; e.Use();
                 }
                 break;
         }
@@ -562,7 +650,7 @@ public class ActionEditorWindow : EditorWindow
                 if (mode != DragMode.None)
                 {
                     _selLane = i; _selIndex = b.Index; _drag = mode;
-                    Undo.RecordObject(_def, "Edit Action Window");
+                    _dragUndoRegistered = false;   // undo registers on first movement
                     return true;
                 }
             }
@@ -683,7 +771,10 @@ public class ActionEditorWindow : EditorWindow
             el.FindPropertyRelative("StartFrame").intValue = _currentFrame;
             el.FindPropertyRelative("EndFrame").intValue = Mathf.Min(total, _currentFrame + 4);
         }
+        if (lane == 0) // Hit lane: start with a visible gizmo color
+            el.FindPropertyRelative("GizmoColor").colorValue = new Color(0.95f, 0.35f, 0.28f, 1f);
         _so.ApplyModifiedProperties();
+        Undo.SetCurrentGroupName("Add Action Window");
         _selLane = lane; _selIndex = arr.arraySize - 1;
         Repaint();
     }
@@ -695,6 +786,7 @@ public class ActionEditorWindow : EditorWindow
         if (_selIndex >= 0 && _selIndex < arr.arraySize)
             arr.DeleteArrayElementAtIndex(_selIndex);
         _so.ApplyModifiedProperties();
+        Undo.SetCurrentGroupName("Delete Action Window");
         _selLane = _selIndex = -1;
         Repaint();
     }

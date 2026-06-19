@@ -27,6 +27,7 @@ public struct HitWindow
     public int Damage, HitstopFrames;
     public ReactionType Reaction;
     public Vector3 Launch;
+    public Color GizmoColor;
 }
 
 [System.Serializable]

@@ -154,6 +154,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwapMelee"",
+                    ""type"": ""Button"",
+                    ""id"": ""dc698e84-3086-4d9f-9ffb-0c9ba210e7a5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwapRanged"",
+                    ""type"": ""Button"",
+                    ""id"": ""86b40c0c-727b-4c9b-87bd-0583bc498a98"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -277,6 +295,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a85b954-c2ef-4d60-b12d-bac0cd815745"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwapMelee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""799442f5-edfa-4508-9a6c-f4358614ed31"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwapRanged"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -292,6 +332,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Gameplay_Dodge = m_Gameplay.FindAction("Dodge", throwIfNotFound: true);
         m_Gameplay_LockOn = m_Gameplay.FindAction("LockOn", throwIfNotFound: true);
         m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
+        m_Gameplay_SwapMelee = m_Gameplay.FindAction("SwapMelee", throwIfNotFound: true);
+        m_Gameplay_SwapRanged = m_Gameplay.FindAction("SwapRanged", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -379,6 +421,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Dodge;
     private readonly InputAction m_Gameplay_LockOn;
     private readonly InputAction m_Gameplay_Shoot;
+    private readonly InputAction m_Gameplay_SwapMelee;
+    private readonly InputAction m_Gameplay_SwapRanged;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -418,6 +462,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/Shoot".
         /// </summary>
         public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/SwapMelee".
+        /// </summary>
+        public InputAction @SwapMelee => m_Wrapper.m_Gameplay_SwapMelee;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/SwapRanged".
+        /// </summary>
+        public InputAction @SwapRanged => m_Wrapper.m_Gameplay_SwapRanged;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -465,6 +517,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
+            @SwapMelee.started += instance.OnSwapMelee;
+            @SwapMelee.performed += instance.OnSwapMelee;
+            @SwapMelee.canceled += instance.OnSwapMelee;
+            @SwapRanged.started += instance.OnSwapRanged;
+            @SwapRanged.performed += instance.OnSwapRanged;
+            @SwapRanged.canceled += instance.OnSwapRanged;
         }
 
         /// <summary>
@@ -497,6 +555,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
+            @SwapMelee.started -= instance.OnSwapMelee;
+            @SwapMelee.performed -= instance.OnSwapMelee;
+            @SwapMelee.canceled -= instance.OnSwapMelee;
+            @SwapRanged.started -= instance.OnSwapRanged;
+            @SwapRanged.performed -= instance.OnSwapRanged;
+            @SwapRanged.canceled -= instance.OnSwapRanged;
         }
 
         /// <summary>
@@ -586,5 +650,19 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnShoot(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SwapMelee" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwapMelee(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SwapRanged" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwapRanged(InputAction.CallbackContext context);
     }
 }

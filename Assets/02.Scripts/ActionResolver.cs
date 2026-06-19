@@ -27,7 +27,7 @@ public class ActionResolver
         bool neutral = _ctx.ActionState == ActionState.None;
         bool cancelAttack = _runner.IsPlaying && (_ctx.CancelFlags & CancelTag.AnyAttack) != 0;
 
-        // 0) SWAP (neutral 또는 AnyAttack 캔슐창; cancel이면 현재무브 abort)
+        // 0) SWAP (neutral 또는 AnyAttack 캔슬창; cancel이면 현재무브 abort)
         if (neutral || cancelAttack)
         {
             if (_buffer.TryConsume(InputId.SwapMelee, currentFrame, Lenience)) { DoSwap(true, cancelAttack, currentFrame); return; }
